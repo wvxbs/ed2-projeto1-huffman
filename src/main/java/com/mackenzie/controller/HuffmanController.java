@@ -14,28 +14,43 @@ public class HuffmanController {
         System.out.println("--- Comprimindo " + arquivoEntrada + "... ---");
         File fEntrada = new File(arquivoEntrada);
 
+        long tempoInicio = System.nanoTime();
+
         model.analisarFrequencia(arquivoEntrada);
-        view.imprimirTabelaFrequencia(model.getTabelaFrequencia());
-
         model.construirArvore();
-        view.imprimirArvore(model.getArvoreHuffman());
-
         model.gerarTabelaDeCodigos();
+        model.comprimirArquivo(arquivoEntrada, arquivoSaida);
+
+        long tempoFim = System.nanoTime();
+
+        view.imprimirTabelaFrequencia(model.getTabelaFrequencia());
+        view.imprimirArvore(model.getArvoreHuffman());
         view.imprimirTabelaCodigos(model.getTabelaCodigos());
 
-        model.comprimirArquivo(arquivoEntrada, arquivoSaida);
         File fSaida = new File(arquivoSaida);
-
         view.imprimirResumoCompressao(fEntrada.length(), fSaida.length());
-        System.out.println("\n*** SUCESSO: Arquivo comprimido em " + arquivoSaida + " ***");
 
+        long duracaoNs = tempoFim - tempoInicio;
+        double duracaoMs = duracaoNs / 1_000_000.0;
+        System.out.printf("Tempo total de compressão: %.2f ms\n\n", duracaoMs);
+
+        System.out.println("*** SUCESSO: Arquivo comprimido em " + arquivoSaida + " ***");
     }
 
     private void processoDeDescompressao(String arquivoEntrada, String arquivoSaida) throws IOException {
         System.out.println("--- Descomprimindo " + arquivoEntrada + "... ---");
-        model.descomprimirArquivo(arquivoEntrada, arquivoSaida);
-        System.out.println("\n*** SUCESSO: Arquivo descomprimido em " + arquivoSaida + " ***");
 
+        long tempoInicio = System.nanoTime();
+
+        model.descomprimirArquivo(arquivoEntrada, arquivoSaida);
+
+        long tempoFim = System.nanoTime();
+        long duracaoNs = tempoFim - tempoInicio;
+        double duracaoMs = duracaoNs / 1_000_000.0;
+
+        System.out.printf("Tempo total de descompressão: %.2f ms\n\n", duracaoMs);
+
+        System.out.println("*** SUCESSO: Arquivo descomprimido em " + arquivoSaida + " ***");
     }
 
     public void executar(String modo, String arquivoEntrada, String arquivoSaida) {
