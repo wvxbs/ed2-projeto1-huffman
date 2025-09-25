@@ -51,7 +51,7 @@ public class MinHeap {
             return null;
 
         No min = heap.get(0);
-        No ultimo = hep.remove(heap.size());
+        No ultimo = heap.remove(heap.size());
 
         if(!heap.isEmpty()) {
             heap.set(0, ultimo);
