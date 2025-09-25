@@ -6,14 +6,14 @@ import java.util.Collections;
 public class MinHeap {
     private ArrayList<No> heap = new ArrayList<>();
 
-    private void heapfyUp(int index) {
+    private void heapifyUp(int index) {
         int pai = (index -1) / 2;
         if(
                 index > 0 &&
                         heap.get(index).compareTo(heap.get(pai)) < 0
         ) {
             Collections.swap(heap, index, pai);
-            heapfyUp(pai);
+            heapifyUp(pai);
         }
     }
 
@@ -41,9 +41,13 @@ public class MinHeap {
         }
     }
 
+    public int size() {
+        return heap.size();
+    }
+
     public void inserir(No no) {
         heap.add(no);
-        heapfyUp(heap.size());
+        heapifyUp(heap.size() - 1);
     }
 
     public No removerMin() {
@@ -51,7 +55,7 @@ public class MinHeap {
             return null;
 
         No min = heap.get(0);
-        No ultimo = heap.remove(heap.size());
+        No ultimo = heap.remove(heap.size()- 1);
 
         if(!heap.isEmpty()) {
             heap.set(0, ultimo);
